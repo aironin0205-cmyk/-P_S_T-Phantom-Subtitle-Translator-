@@ -4,7 +4,7 @@
 // ===== IMPORTS & DEPENDENCIES =====
 import { ZodError } from 'zod';
 import { ApiError } from '../core/AppError.js';
-import config from '../config/index.js';
+import { config } from '../config/index.js';
 
 /**
  * A comprehensive error handler for the Fastify application.
