@@ -6,7 +6,7 @@
 // ===== IMPORTS & DEPENDENCIES =====
 import { toSrtPromptFormat } from '../core/srtParser.js';
 import { config } from '../config/index.js';
-import { callGemini } from '../config/gemini.js'; // We will create this client initialization file later.
+import { callGemini } from '../config/gemini.js';
 import { ApiError } from '../core/AppError.js';
 
 // ===== UTILITY FUNCTIONS =====
@@ -185,4 +185,4 @@ ${promptData}
 Produce the JSON output containing the final, sync-checked Persian subtitle text.`;
     return await this._callBatchAgent('phantomSync', prompt, batch, config.GEMINI_SYNC_MODEL);
   }
-}
+                        }
