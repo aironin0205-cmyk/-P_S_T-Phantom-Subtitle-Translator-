@@ -7,7 +7,7 @@ import { logger } from './config/logger.js';
 import { buildApp } from './app.js';
 import { connectToMongo, closeMongoConnection } from './config/database.js';
 import { connectToPinecone, closePineconeConnection } from './services/vector.service.js';
-import { connectToGemini } from './config/gemini.js'; // <-- CORRECTED IMPORT PATH
+import { connectToGemini } from './config/gemini.js';
 
 // ===== GRACEFUL SHUTDOWN HANDLER =====
 let isShuttingDown = false;
@@ -40,9 +40,14 @@ async function start() {
   let app;
 
   try {
+    // --- TEMPORARY DEBUGGING LINE ---
+    // This will print all the validated environment variables to the Render log.
+    console.log('--- RECEIVED CONFIGURATION ---', config);
+    // --- END TEMPORARY DEBUGGING LINE ---
+
     await connectToMongo();
     await connectToPinecone();
-    connectToGemini(); // This function now correctly points to the logic in config/gemini.js
+    connectToGemini();
     logger.info('Database and external service connections established.');
 
     app = buildApp({ logger });
