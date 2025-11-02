@@ -5,7 +5,7 @@
 
 // ===== IMPORTS & DEPENDENCIES =====
 import { toSrtPromptFormat } from '../core/srtParser.js';
-import config from '../config/index.js';
+import { config } from '../config/index.js';
 import { callGemini } from '../config/gemini.js'; // We will create this client initialization file later.
 import { ApiError } from '../core/AppError.js';
 
