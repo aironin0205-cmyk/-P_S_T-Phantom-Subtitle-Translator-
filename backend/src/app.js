@@ -9,7 +9,7 @@ import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import { withTypeProvider } from 'fastify-type-provider-zod';
 
-import config from './config/index.js';
+import { config } from './config/index.js';
 import { translationRoutes } from './features/translation/translation.routes.js';
 import { zodErrorHandler } from './middleware/errorHandler.js';
 // We will create these placeholder files and functions in a later step.
