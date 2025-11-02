@@ -7,12 +7,13 @@ import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
-import { withTypeProvider } from 'fastify-type-provider-zod';
+// CORRECTED IMPORT for CommonJS compatibility
+import fastifyTypeProviderZod from 'fastify-type-provider-zod';
+const { withTypeProvider } = fastifyTypeProviderZod;
 
 import { config } from './config/index.js';
 import { translationRoutes } from './features/translation/translation.routes.js';
 import { zodErrorHandler } from './middleware/errorHandler.js';
-// We will create these placeholder files and functions in a later step.
 import { getMongoStatus } from './config/database.js';
 import { getPineconeStatus } from './services/vector.service.js';
 
@@ -23,23 +24,19 @@ import { getPineconeStatus } from './services/vector.service.js';
  * @returns {import('fastify').FastifyInstance}
  */
 export function buildApp({ logger }) {
-  // 1. Initialize Fastify with the Zod type provider.
-  // This is the key change that enables full end-to-end type safety.
-  const app = Fastify({ logger }).withTypeProvider();
+  // 1. Initialize Fastify, and then attach the Zod type provider.
+  const app = Fastify({ logger }).withTypeProvider(withTypeProvider);
 
   // 2. Add Contextual Logging Hook
-  // This excellent pattern from your original code is preserved.
-  // It enriches every request's logger with a unique traceId.
   app.addHook('preHandler', (request, reply, done) => {
     reply.log = request.log = logger.child({ traceId: request.id });
     done();
   });
 
   // 3. Register Essential Security & Utility Plugins
-  // We now `await` registrations for guaranteed load order.
   app.register(helmet, { contentSecurityPolicy: false });
   app.register(cors, {
-    origin: config.CORS_ORIGIN, // Using a more generic name from our config
+    origin: config.CORS_ORIGIN,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   });
   app.register(rateLimit, {
@@ -48,7 +45,6 @@ export function buildApp({ logger }) {
   });
 
   // 4. Set the Custom Error Handler
-  // The logic is now imported from our dedicated middleware file.
   app.setErrorHandler(zodErrorHandler);
 
   // 5. Register Health Check and Root Routes
@@ -70,7 +66,6 @@ export function buildApp({ logger }) {
   app.get('/', async () => ({ status: 'ok', message: 'PST Backend is online.' }));
 
   // 6. Register Feature-Specific Routes
-  // Routes are now imported from the feature's dedicated `routes.js` file.
   app.register(translationRoutes, { prefix: '/api/v1/translate' });
 
   logger.info('Application routes and plugins registered.');
