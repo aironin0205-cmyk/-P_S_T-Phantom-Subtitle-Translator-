@@ -7,7 +7,7 @@ import { logger } from './config/logger.js';
 import { buildApp } from './app.js';
 import { connectToMongo, closeMongoConnection } from './config/database.js';
 import { connectToPinecone, closePineconeConnection } from './services/vector.service.js';
-import { connectToGemini } from './services/gemini.service.js';
+import { connectToGemini } from './config/gemini.js'; // <-- CORRECTED IMPORT PATH
 
 // ===== GRACEFUL SHUTDOWN HANDLER =====
 let isShuttingDown = false;
@@ -42,7 +42,7 @@ async function start() {
   try {
     await connectToMongo();
     await connectToPinecone();
-    connectToGemini();
+    connectToGemini(); // This function now correctly points to the logic in config/gemini.js
     logger.info('Database and external service connections established.');
 
     app = buildApp({ logger });
