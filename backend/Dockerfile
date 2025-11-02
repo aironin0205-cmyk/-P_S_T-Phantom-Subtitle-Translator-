@@ -10,9 +10,9 @@ FROM node:18.18.2-alpine AS builder
 # Set the working directory for the entire build process.
 WORKDIR /usr/src/app
 
-# Copy only the package files. This leverages Docker's layer caching.
-# The 'npm install' layer will only be rebuilt if these files change.
-COPY package.json package-lock.json ./
+# Copy only the package files. The wildcard ensures this works even if
+# a lock file isn't present, though it is highly recommended.
+COPY package*.json ./
 
 # Install ONLY production dependencies using 'npm ci' for faster, more reliable installs.
 RUN npm ci --only=production
