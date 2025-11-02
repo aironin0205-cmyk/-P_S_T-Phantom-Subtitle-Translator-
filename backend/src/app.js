@@ -1,15 +1,13 @@
 // ===== DEVELOPMENT/DEBUG APPLICATION FACTORY =====
 // This file is responsible for BUILDING and CONFIGURING the Fastify application.
-// It is now fully type-safe and more modular.
+// The Zod type provider has been removed for maximum compatibility.
 
 // ===== IMPORTS & DEPENDENCIES =====
 import Fastify from 'fastify';
 import helmet from '@fastify/helmet';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
-// CORRECTED IMPORT for CommonJS compatibility
-import fastifyTypeProviderZod from 'fastify-type-provider-zod';
-const { withTypeProvider } = fastifyTypeProviderZod;
+// NOTE: fastify-type-provider-zod import is removed.
 
 import { config } from './config/index.js';
 import { translationRoutes } from './features/translation/translation.routes.js';
@@ -24,8 +22,9 @@ import { getPineconeStatus } from './services/vector.service.js';
  * @returns {import('fastify').FastifyInstance}
  */
 export function buildApp({ logger }) {
-  // 1. Initialize Fastify, and then attach the Zod type provider.
-  const app = Fastify({ logger }).withTypeProvider(withTypeProvider);
+  // 1. Initialize a standard Fastify instance.
+  // The .withTypeProvider() call has been removed.
+  const app = Fastify({ logger });
 
   // 2. Add Contextual Logging Hook
   app.addHook('preHandler', (request, reply, done) => {
