@@ -2,7 +2,7 @@
 // This file is the application's main entry point. It manages the server's lifecycle.
 
 // ===== IMPORTS & DEPENDENCIES =====
-import config from './config/index.js';
+import { config } from './config/index.js';
 import { logger } from './config/logger.js';
 import { buildApp } from './app.js';
 import { connectToMongo, closeMongoConnection } from './config/database.js';
